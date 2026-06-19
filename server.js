@@ -455,7 +455,7 @@ app.post('/api/delete-all-records', async (req, res) => {
 // ==========================================
 // 8. START SERVER (PORT 3000)
 // ==========================================
-const port = 3000;
+const port = process.env.PORT || 3000;
 const localIp = getLocalIp();
 
 server.listen(port, async () => {
