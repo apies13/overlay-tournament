@@ -1,0 +1,80 @@
+{
+  "draftdata": {
+    "timer": "60",
+    "timerRunning": false,
+    "current_phase": 17,
+    "blueside": {
+      "ban": [
+        {
+          "hero": "/Assets/HeroPick/akai.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/harley.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/sora.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/angela.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/floryn.png"
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/yisunshin.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/clint.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/grock.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/gord.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/lapulapu.png"
+        }
+      ]
+    },
+    "redside": {
+      "ban": [
+        {
+          "hero": "/Assets/HeroPick/suyou.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/zetian.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/gloo.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/yve.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/pharsa.png"
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/zhuxin.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/harith.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/leomord.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/phoveus.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/khaleed.png"
+        }
+      ]
+    },
+    "timer_running": true
+  }
+}

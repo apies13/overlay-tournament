@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Control</title>
+    <style>
+        @font-face {
+            font-family: 'Big Noodle Titling';
+            src: url('Assets/Font/big_noodle_titling.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #0D0F12;
+            color: #EAEAEA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .control-panel {
+            background: rgba(26, 28, 32, 0.8);
+            border: 1px solid #3f3f46;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Big Noodle Titling', sans-serif;
+            color: #A855F7;
+            letter-spacing: 2px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #A1A1AA;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            background: #1A1C20;
+            border: 1px solid #3f3f46;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #A855F7;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 15px;
+        }
+
+        .time-inputs .form-group {
+            flex: 1;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 12px;
+            font-family: 'Big Noodle Titling', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 5px;
+            background: transparent;
+            transition: all 0.2s;
+        }
+
+        .btn-start {
+            border: 1px solid #00FF8C;
+            color: #00FF8C;
+        }
+        .btn-start:hover { background: #00FF8C; color: #000; box-shadow: 0 0 15px rgba(0, 255, 140, 0.5); }
+
+        .btn-pause {
+            border: 1px solid #FFD700;
+            color: #FFD700;
+        }
+        .btn-pause:hover { background: #FFD700; color: #000; box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+
+        .btn-reset {
+            border: 1px solid #FF4444;
+            color: #FF4444;
+        }
+        .btn-reset:hover { background: #FF4444; color: #fff; box-shadow: 0 0 15px rgba(255, 68, 68, 0.5); }
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <h1>COUNTDOWN CONTROL</h1>
+
+        <div class="time-inputs">
+            <div class="form-group">
+                <label>Minutes</label>
+                <input type="number" id="inMinutes" value="5" min="0">
+            </div>
+            <div class="form-group">
+                <label>Seconds</label>
+                <input type="number" id="inSeconds" value="0" min="0" max="59">
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label style="text-align: center;">TEXT COLOR</label>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button onclick="sendActionColor('white')" style="flex: 1; border: 1px solid #ffffff; color: #ffffff; font-size: 1rem; padding: 10px;">WHITE</button>
+                <button onclick="sendActionColor('black')" style="flex: 1; border: 1px solid #A1A1AA; color: #A1A1AA; background: #000; font-size: 1rem; padding: 10px;">BLACK</button>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-start" onclick="sendStart()">START</button>
+            <button class="btn-pause" onclick="sendAction('pause')">PAUSE</button>
+            <button class="btn-reset" onclick="sendReset()" style="grid-column: span 2;">SET / RESET</button>
+        </div>
+    </div>
+
+    <script>
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const ws = new WebSocket(`${wsProtocol}//${window.location.host}`);
+
+        ws.onopen = () => console.log("Connected to server");
+
+        function sendCommand(cmd) {
+            if (ws.readyState === WebSocket.OPEN) {
+                const payload = {
+                    type: 'update',
+                    data: { countdown: cmd }
+                };
+                ws.send(JSON.stringify(payload));
+            } else {
+                alert("WebSocket not connected!");
+            }
+        }
+
+        function getDurationMs() {
+            const m = parseInt(document.getElementById('inMinutes').value) || 0;
+            const s = parseInt(document.getElementById('inSeconds').value) || 0;
+            return (m * 60 + s) * 1000;
+        }
+
+        function sendStart() {
+            // We just send 'start' and it resumes. If we want to force start from inputs, we can send duration.
+            // Let's send start. Display handles resume natively.
+            sendCommand({ action: 'start' });
+        }
+
+        function sendReset() {
+            sendCommand({ action: 'reset', duration: getDurationMs() });
+        }
+
+        function sendAction(action) {
+            sendCommand({ action: action });
+        }
+
+        function sendActionColor(color) {
+            sendCommand({ action: 'setColor', color: color });
+        }
+    </script>
+</body>
+</html>

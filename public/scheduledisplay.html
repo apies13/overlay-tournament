@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement Schedule Display</title>
+    <link rel="stylesheet" href="acdisplay.css">
+</head>
+<body>
+    <div class="schedule-wrapper">
+        <!-- Schedule 1 -->
+        <div id="schedule-1" class="schedule">
+            <div class="header">
+                <div class="match-title" id="title-1">MATCH 1</div>
+                <div class="match-bo" id="bo-1">BO3</div>
+                <div class="match-time" id="time-display-1">00:00 WIB</div>
+            </div>
+            <div class="match-content">
+                <div class="team">
+                    <img id="logo1-1" src="Assets/Other/transparent.png" alt="Logo 1">
+                    <div id="team1-1" class="teamname">TEAM 1</div>
+                </div>
+                <div class="score-container">
+                    <div class="score" id="score1-1">0</div>
+                    <div class="separator">-</div>
+                    <div class="score" id="score2-1">0</div>
+                </div>
+                <div class="team">
+                    <img id="logo2-1" src="Assets/Other/transparent.png" alt="Logo 2">
+                    <div id="team2-1" class="teamname">TEAM 2</div>
+                </div>
+            </div>
+            <!-- Hidden time element for compatibility with acdisplay.js if needed, or we can update acdisplay.js to handle the split -->
+            <div id="time-1" style="display:none;"></div>
+        </div>
+        
+        <!-- Schedule 2 -->
+        <div id="schedule-2" class="schedule">
+            <div class="header">
+                <div class="match-title" id="title-2">MATCH 2</div>
+                <div class="match-bo" id="bo-2">BO3</div>
+                <div class="match-time" id="time-display-2">00:00 WIB</div>
+            </div>
+            <div class="match-content">
+                <div class="team">
+                    <img id="logo1-2" src="Assets/Other/transparent.png" alt="Logo 1">
+                    <div id="team1-2" class="teamname">TEAM 1</div>
+                </div>
+                <div class="score-container">
+                    <div class="score" id="score1-2">0</div>
+                    <div class="separator">-</div>
+                    <div class="score" id="score2-2">0</div>
+                </div>
+                <div class="team">
+                    <img id="logo2-2" src="Assets/Other/transparent.png" alt="Logo 2">
+                    <div id="team2-2" class="teamname">TEAM 2</div>
+                </div>
+            </div>
+            <div id="time-2" style="display:none;"></div>
+        </div>
+
+        <!-- Schedule 3 -->
+        <div id="schedule-3" class="schedule">
+            <div class="header">
+                <div class="match-title" id="title-3">MATCH 3</div>
+                <div class="match-bo" id="bo-3">BO3</div>
+                <div class="match-time" id="time-display-3">00:00 WIB</div>
+            </div>
+            <div class="match-content">
+                <div class="team">
+                    <img id="logo1-3" src="Assets/Other/transparent.png" alt="Logo 1">
+                    <div id="team1-3" class="teamname">TEAM 1</div>
+                </div>
+                <div class="score-container">
+                    <div class="score" id="score1-3">0</div>
+                    <div class="separator">-</div>
+                    <div class="score" id="score2-3">0</div>
+                </div>
+                <div class="team">
+                    <img id="logo2-3" src="Assets/Other/transparent.png" alt="Logo 2">
+                    <div id="team2-3" class="teamname">TEAM 2</div>
+                </div>
+            </div>
+            <div id="time-3" style="display:none;"></div>
+        </div>
+
+        <!-- Schedule 4 -->
+        <div id="schedule-4" class="schedule">
+            <div class="header">
+                <div class="match-title" id="title-4">MATCH 4</div>
+                <div class="match-bo" id="bo-4">BO3</div>
+                <div class="match-time" id="time-display-4">00:00 WIB</div>
+            </div>
+            <div class="match-content">
+                <div class="team">
+                    <img id="logo1-4" src="Assets/Other/transparent.png" alt="Logo 1">
+                    <div id="team1-4" class="teamname">TEAM 1</div>
+                </div>
+                <div class="score-container">
+                    <div class="score" id="score1-4">0</div>
+                    <div class="separator">-</div>
+                    <div class="score" id="score2-4">0</div>
+                </div>
+                <div class="team">
+                    <img id="logo2-4" src="Assets/Other/transparent.png" alt="Logo 2">
+                    <div id="team2-4" class="teamname">TEAM 2</div>
+                </div>
+            </div>
+            <div id="time-4" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script src="script/acdisplay.js"></script>
+    <script src="crossclient.js"></script>
+</body>
+</html>

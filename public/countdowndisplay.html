@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Display</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            background-color: transparent; /* Transparent for OBS */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .countdown-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 15rem; /* Ukuran dibesarkan karena tanpa background */
+            line-height: 1;
+            color: #ffffff; /* Default putih */
+            /* Text shadow dihilangkan agar rata dan bersih */
+            font-variant-numeric: tabular-nums;
+            transition: color 0.3s;
+        }
+
+        .timer.black {
+            color: #000000;
+        }
+
+        .timer.white {
+            color: #ffffff;
+        }
+
+        .timer.ended {
+            color: #FF4444; /* Tetap merah saat waktu habis */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="countdown-container" id="cdContainer">
+        <div class="timer" id="cdTimer">05:00</div>
+    </div>
+
+    <script>
+        const timerEl = document.getElementById('cdTimer');
+        const containerEl = document.getElementById('cdContainer');
+
+        let targetTime = 0;
+        let timerInterval = null;
+        let isRunning = false;
+        let remainingPaused = 0; // ms remaining if paused
+
+        // WebSocket Setup
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const ws = new WebSocket(`${wsProtocol}//${window.location.host}`);
+
+        ws.onopen = () => console.log("Countdown Display connected to server");
+
+        ws.onmessage = (event) => {
+            try {
+                const msg = JSON.parse(event.data);
+                if (msg.type === 'update' && msg.data && msg.data.countdown) {
+                    handleCountdownCommand(msg.data.countdown);
+                }
+            } catch (e) {
+                console.error("WS parse error", e);
+            }
+        };
+
+        function handleCountdownCommand(cmd) {
+            if (cmd.action === 'start') {
+                if (cmd.duration !== undefined) {
+                    // Start fresh
+                    targetTime = Date.now() + cmd.duration;
+                } else if (remainingPaused > 0) {
+                    // Resume
+                    targetTime = Date.now() + remainingPaused;
+                } else {
+                    // Default fallback to 5 minutes
+                    remainingPaused = 300000;
+                    targetTime = Date.now() + remainingPaused;
+                }
+                isRunning = true;
+                timerEl.classList.remove('ended');
+                startTimer();
+            } else if (cmd.action === 'pause') {
+                isRunning = false;
+                if (targetTime > Date.now()) {
+                    remainingPaused = targetTime - Date.now();
+                } else {
+                    remainingPaused = 0;
+                }
+                clearInterval(timerInterval);
+            } else if (cmd.action === 'reset') {
+                isRunning = false;
+                clearInterval(timerInterval);
+                remainingPaused = cmd.duration;
+                timerEl.classList.remove('ended');
+                updateDisplay(remainingPaused);
+            } else if (cmd.action === 'setColor') {
+                if (cmd.color === 'black') {
+                    timerEl.classList.remove('white');
+                    timerEl.classList.add('black');
+                } else if (cmd.color === 'white') {
+                    timerEl.classList.remove('black');
+                    timerEl.classList.add('white');
+                }
+            }
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (!isRunning) return;
+                
+                const now = Date.now();
+                const diff = targetTime - now;
+
+                if (diff <= 0) {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    updateDisplay(0);
+                    timerEl.classList.add('ended');
+                    // Optional: auto hide after 5 seconds? Let's leave it to user control.
+                } else {
+                    updateDisplay(diff);
+                }
+            }, 100);
+        }
+
+        function updateDisplay(ms) {
+            const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            const mStr = String(minutes).padStart(2, '0');
+            const sStr = String(seconds).padStart(2, '0');
+            
+            timerEl.innerText = `${mStr}:${sStr}`;
+        }
+    </script>
+</body>
+</html>

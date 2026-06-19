@@ -1,0 +1,21 @@
+{
+  "mvp": {
+    "checkboxId": "mvp-blueteam-0",
+    "side": "blue",
+    "nickname": "APIS1",
+    "heroImg": "Assets/HeroPick/Yisunshin.png",
+    "playerPhoto": "Assets/player/playertemp.png",
+    "stats": {
+      "LVL": "15",
+      "KDA": "1/2/3",
+      "GOLD": "12432",
+      "SPELL": "Retribution",
+      "ITEM 1": "War Axe",
+      "ITEM 2": "Magic Shoes",
+      "ITEM 3": "Endless Battle",
+      "ITEM 4": "Malefic Roar",
+      "ITEM 5": "Blade of Despair",
+      "ITEM 6": "Immortality"
+    }
+  }
+}

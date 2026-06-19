@@ -1,0 +1,144 @@
+@font-face {
+    font-family: 'myfonts';
+    src: url('Assets/Font/big_noodle_titling.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --primarycolor: #fff;
+    --fontcolor: #000;
+}
+
+body {
+    font-family: 'myfonts', sans-serif;
+    color: var(--fontcolor);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+.schedule-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 20px;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.schedule {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background: transparent;
+    padding: 10px;
+}
+
+/* Header Styling */
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fallback for non-game font */
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.match-title {
+    color: #555;
+    text-transform: uppercase;
+}
+
+/* Highlight the first match title in red */
+.schedule.is-upcoming .match-title {
+    color: #e3000f;
+}
+.schedule.is-upcoming {
+    background: linear-gradient(to top, rgba(227, 0, 15, 0.05), transparent);
+}
+
+.match-bo {
+    color: #333;
+    font-size: 16px;
+    margin-left: 10px;
+    margin-right: auto;
+}
+
+.match-time {
+    background-color: #e3000f;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-size: 14px;
+}
+
+/* Match Content Styling */
+.match-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.team {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.team img {
+    object-fit: contain;
+    width: 90px;
+    height: 90px;
+    margin-bottom: 10px;
+    /* Optional shadow or styling for logos */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+}
+
+.teamname {
+    width: 100%;
+    font-size: 24px;
+    color: #000;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.score-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+}
+
+.score {
+    font-size: 100px;
+    line-height: 1;
+    color: #333;
+    width: 50px;
+    text-align: center;
+    /* Narrow tall font look, typical of big_noodle_titling */
+}
+
+.separator {
+    font-size: 60px;
+    color: #333;
+    margin: 0 5px;
+    line-height: 1;
+}
+
+/* Hide unneeded schedule container if display is none in JS */
+.schedule[style*="display: none"] {
+    display: none !important;
+}
